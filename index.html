@@ -1,535 +1,521 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaxy Audio Reverse Challenge</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Audio Recorder</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            background: linear-gradient(125deg, #0a0a2a, #1a0033, #0a0a2a);
-            color: #fff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             padding: 20px;
-            overflow-x: hidden;
+            color: white;
         }
-        
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        .star {
-            position: absolute;
-            background-color: white;
-            border-radius: 50%;
-            animation: twinkle linear infinite;
-        }
-        
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 1; }
-        }
-        
+
         .container {
             width: 100%;
-            max-width: 800px;
-            background: rgba(10, 10, 42, 0.7);
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 0 30px rgba(112, 0, 255, 0.4);
-            border: 1px solid rgba(112, 0, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
+
         h1 {
             text-align: center;
-            margin-bottom: 25px;
-            font-size: 2.5rem;
-            background: linear-gradient(90deg, #a56af9, #6a82fb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 15px rgba(106, 130, 251, 0.5);
+            margin-bottom: 30px;
+            font-weight: 300;
+            font-size: 2.2rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
-        
-        .timer {
-            text-align: center;
-            font-size: 3rem;
-            font-weight: bold;
-            margin: 20px 0;
-            font-family: monospace;
-            color: #6a82fb;
-            text-shadow: 0 0 10px rgba(106, 130, 251, 0.7);
-        }
-        
-        .visualizer {
-            height: 150px;
-            width: 100%;
-            margin: 20px 0;
-            position: relative;
-            overflow: hidden;
-            border-radius: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(112, 0, 255, 0.2);
-        }
-        
-        .visualizer-bars {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            height: 100%;
-            padding: 10px;
-        }
-        
-        .bar {
-            width: 12px;
-            background: linear-gradient(to top, #6a82fb, #fc5c7d);
-            border-radius: 6px 6px 0 0;
-            transition: height 0.2s ease;
-        }
-        
+
         .controls {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            display: flex;
+            justify-content: center;
             gap: 15px;
-            margin: 30px 0;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
-        
+
         .btn {
-            padding: 18px 5px;
+            padding: 15px 25px;
             border: none;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #6a82fb, #fc5c7d);
-            color: white;
+            border-radius: 50px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            gap: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(106, 130, 251, 0.4);
-        }
-        
-        .btn:active {
-            transform: translateY(1px);
-        }
-        
+
         .btn:disabled {
-            background: linear-gradient(135deg, #3a4a8a, #8a3a4a);
+            opacity: 0.6;
             cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
         }
-        
-        .btn i {
-            font-size: 24px;
-            margin-bottom: 8px;
+
+        .btn-record {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
         }
-        
-        .recording {
-            animation: pulse 1.5s infinite;
-            background: linear-gradient(135deg, #fc5c7d, #ff3737);
+
+        .btn-stop {
+            background: linear-gradient(45deg, #ff9ff3, #f368e0);
+            color: white;
         }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
-            50% { transform: scale(1.05); box-shadow: 0 6px 20px rgba(255, 55, 55, 0.4); }
-            100% { transform: scale(1); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+
+        .btn-play {
+            background: linear-gradient(45deg, #1dd1a1, #10ac84);
+            color: white;
         }
-        
-        .history {
-            margin-top: 30px;
-            max-height: 200px;
-            overflow-y: auto;
-            border-radius: 15px;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(112, 0, 255, 0.2);
+
+        .btn-pause {
+            background: linear-gradient(45deg, #feca57, #ff9ff3);
+            color: white;
         }
-        
-        .history-item {
-            padding: 12px;
-            margin: 8px 0;
-            background: rgba(26, 0, 51, 0.5);
-            border-radius: 10px;
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .recording-indicator {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .history-item:hover {
-            background: rgba(106, 130, 251, 0.3);
-            transform: translateX(5px);
-        }
-        
-        .history-item span {
-            font-size: 14px;
-            color: #a56af9;
-        }
-        
-        .history-item i {
-            color: #fc5c7d;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
             font-size: 18px;
         }
-        
-        .reverse-challenge {
-            text-align: center;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(26, 0, 51, 0.5);
-            border-radius: 15px;
-            border: 1px solid rgba(112, 0, 255, 0.2);
+
+        .pulse {
+            width: 12px;
+            height: 12px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
         }
-        
-        .reverse-challenge h2 {
+
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.8); opacity: 0.7; }
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 2rem;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .audio-player {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            height: 8px;
             margin-bottom: 10px;
-            color: #6a82fb;
+            cursor: pointer;
+            overflow: hidden;
         }
-        
-        .instructions {
-            text-align: center;
-            margin: 20px 0;
-            color: #a56af9;
-            font-size: 16px;
-            line-height: 1.6;
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            width: 0%;
+            transition: width 0.1s ease;
         }
-        
-        footer {
-            margin-top: 30px;
-            text-align: center;
-            color: #6a82fb;
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
             font-size: 14px;
+            opacity: 0.8;
         }
-        
-        /* Responsive design */
-        @media (max-width: 600px) {
-            .controls {
-                grid-template-columns: repeat(2, 1fr);
+
+        .history {
+            margin-top: 30px;
+        }
+
+        .history-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        .recordings-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .recording-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .recording-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .recording-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .recording-info {
+            flex: 1;
+        }
+
+        .recording-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .recording-time {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .permission-warning {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
             }
             
             h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             
-            .timer {
-                font-size: 2.5rem;
+            .btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            
+            .controls {
+                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="stars" id="stars"></div>
-    
     <div class="container">
-        <h1>Galaxy Audio Reverse Challenge</h1>
+        <h1>🎤 Audio Recorder</h1>
         
-        <div class="instructions">
-            <p>Record audio, play it back, or reverse it for a fun challenge! Try to guess what your reversed audio sounds like.</p>
+        <div class="recording-indicator" id="recordingIndicator" style="display: none;">
+            <div class="pulse"></div>
+            <span>Aufnahme läuft...</span>
         </div>
         
-        <div class="timer" id="timer">00:00:00</div>
-        
-        <div class="visualizer">
-            <div class="visualizer-bars" id="visualizer"></div>
-        </div>
-        
-        <div class="reverse-challenge">
-            <h2>Reverse Challenge Mode</h2>
-            <p>Record a phrase, reverse it, and try to guess what it sounds like!</p>
-        </div>
+        <div class="timer" id="timer">00:00</div>
         
         <div class="controls">
-            <button class="btn" id="record">
-                <i class="fas fa-microphone"></i>
-                Record
-            </button>
-            <button class="btn" id="stop" disabled>
-                <i class="fas fa-stop"></i>
-                Stop
-            </button>
-            <button class="btn" id="play" disabled>
-                <i class="fas fa-play"></i>
-                Play
-            </button>
-            <button class="btn" id="reverse" disabled>
-                <i class="fas fa-exchange-alt"></i>
-                Reverse
-            </button>
-            <button class="btn" id="history">
-                <i class="fas fa-history"></i>
-                History
-            </button>
-            <button class="btn" id="clear">
-                <i class="fas fa-trash"></i>
-                Clear
-            </button>
+            <button class="btn btn-record" id="recordBtn">● Aufnehmen</button>
+            <button class="btn btn-stop" id="stopBtn" disabled>⏹ Stop</button>
+            <button class="btn btn-play" id="playBtn" disabled>▶ Abspielen</button>
+            <button class="btn btn-pause" id="pauseBtn" disabled>⏸ Pause</button>
         </div>
         
-        <div class="history" id="historyList"></div>
+        <div class="audio-player" id="audioPlayer" style="display: none;">
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="time-display">
+                <span id="currentTime">00:00</span>
+                <span id="duration">00:00</span>
+            </div>
+        </div>
+        
+        <div class="history">
+            <h3 class="history-title">Verlauf</h3>
+            <div class="recordings-list" id="recordingsList"></div>
+        </div>
     </div>
-    
-    <footer>
-        <p>Audio Reverse Challenge - A fun experiment with Web Audio API</p>
-    </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Create stars for background
-            createStars();
-            
-            const recordBtn = document.getElementById('record');
-            const stopBtn = document.getElementById('stop');
-            const playBtn = document.getElementById('play');
-            const reverseBtn = document.getElementById('reverse');
-            const historyBtn = document.getElementById('history');
-            const clearBtn = document.getElementById('clear');
-            const timer = document.getElementById('timer');
-            const visualizer = document.getElementById('visualizer');
-            const historyList = document.getElementById('historyList');
-            
-            let mediaRecorder;
-            let audioChunks = [];
-            let audioBlob = null;
-            let audioUrl = null;
-            let audioElement = null;
-            let isRecording = false;
-            let startTime = 0;
-            let timerInterval = null;
-            let audioContext = null;
-            let analyser = null;
-            let visualizationBars = [];
-            let recordingsHistory = [];
-            
-            // Create visualization bars
-            for (let i = 0; i < 32; i++) {
-                const bar = document.createElement('div');
-                bar.className = 'bar';
-                bar.style.height = '5px';
-                visualizer.appendChild(bar);
-                visualizationBars.push(bar);
+        class AudioRecorder {
+            constructor() {
+                this.mediaRecorder = null;
+                this.audioChunks = [];
+                this.audioBlob = null;
+                this.audioUrl = null;
+                this.isRecording = false;
+                this.isPaused = false;
+                this.startTime = 0;
+                this.elapsedTime = 0;
+                this.timerInterval = null;
+                this.audioElement = new Audio();
+                this.recordings = JSON.parse(localStorage.getItem('audioRecordings') || '[]');
+                
+                this.initElements();
+                this.initEventListeners();
+                this.loadRecordings();
             }
             
-            // Set up audio recording
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ audio: true })
-                    .then(function(stream) {
-                        mediaRecorder = new MediaRecorder(stream);
-                        
-                        // Set up audio context for visualization
-                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                        analyser = audioContext.createAnalyser();
-                        const source = audioContext.createMediaStreamSource(stream);
-                        source.connect(analyser);
-                        analyser.fftSize = 64;
-                        
-                        mediaRecorder.ondataavailable = function(event) {
-                            audioChunks.push(event.data);
-                        };
-                        
-                        mediaRecorder.onstop = function() {
-                            audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                            audioUrl = URL.createObjectURL(audioBlob);
-                            
-                            // Create audio element for playback
-                            if (audioElement) {
-                                audioElement.pause();
-                                URL.revokeObjectURL(audioElement.src);
-                            }
-                            
-                            audioElement = new Audio(audioUrl);
-                            
-                            // Enable play and reverse buttons
-                            playBtn.disabled = false;
-                            reverseBtn.disabled = false;
-                            
-                            // Add to history
-                            addToHistory(audioUrl);
-                            
-                            // Reset for next recording
-                            audioChunks = [];
-                        };
-                    })
-                    .catch(function(err) {
-                        console.error('Error accessing microphone:', err);
-                        alert('Could not access your microphone. Please check permissions.');
-                    });
-            } else {
-                alert('Your browser does not support audio recording.');
+            initElements() {
+                this.recordBtn = document.getElementById('recordBtn');
+                this.stopBtn = document.getElementById('stopBtn');
+                this.playBtn = document.getElementById('playBtn');
+                this.pauseBtn = document.getElementById('pauseBtn');
+                this.timer = document.getElementById('timer');
+                this.recordingIndicator = document.getElementById('recordingIndicator');
+                this.audioPlayer = document.getElementById('audioPlayer');
+                this.progressContainer = document.getElementById('progressContainer');
+                this.progressBar = document.getElementById('progressBar');
+                this.currentTime = document.getElementById('currentTime');
+                this.duration = document.getElementById('duration');
+                this.recordingsList = document.getElementById('recordingsList');
             }
             
-            // Record button
-            recordBtn.addEventListener('click', function() {
-                if (!isRecording) {
-                    mediaRecorder.start();
-                    isRecording = true;
-                    recordBtn.classList.add('recording');
-                    stopBtn.disabled = false;
-                    playBtn.disabled = true;
-                    reverseBtn.disabled = true;
-                    
-                    // Start timer
-                    startTime = Date.now();
-                    timerInterval = setInterval(updateTimer, 100);
-                    
-                    // Start visualization
-                    visualize();
-                }
-            });
-            
-            // Stop button
-            stopBtn.addEventListener('click', function() {
-                if (isRecording) {
-                    mediaRecorder.stop();
-                    isRecording = false;
-                    recordBtn.classList.remove('recording');
-                    stopBtn.disabled = true;
-                    
-                    // Stop timer
-                    clearInterval(timerInterval);
-                    
-                    // Stop visualization
-                    for (let bar of visualizationBars) {
-                        bar.style.height = '5px';
+            initEventListeners() {
+                this.recordBtn.addEventListener('click', () => this.startRecording());
+                this.stopBtn.addEventListener('click', () => this.stopRecording());
+                this.playBtn.addEventListener('click', () => this.playAudio());
+                this.pauseBtn.addEventListener('click', () => this.pauseAudio());
+                
+                this.progressContainer.addEventListener('click', (e) => {
+                    if (this.audioBlob) {
+                        const rect = this.progressContainer.getBoundingClientRect();
+                        const percent = (e.clientX - rect.left) / rect.width;
+                        this.audioElement.currentTime = percent * this.audioElement.duration;
                     }
+                });
+                
+                this.audioElement.addEventListener('timeupdate', () => this.updateProgress());
+                this.audioElement.addEventListener('ended', () => this.onAudioEnded());
+            }
+            
+            async requestMicrophonePermission() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    stream.getTracks().forEach(track => track.stop());
+                    return true;
+                } catch (error) {
+                    console.error('Mikrofon-Zugriff verweigert:', error);
+                    return false;
                 }
-            });
+            }
             
-            // Play button
-            playBtn.addEventListener('click', function() {
-                if (audioElement) {
-                    audioElement.currentTime = 0;
-                    audioElement.play();
-                    
-                    // Visualize playback
-                    visualizePlayback();
+            async startRecording() {
+                const hasPermission = await this.requestMicrophonePermission();
+                if (!hasPermission) {
+                    alert('Mikrofon-Zugriff wird benötigt für die Aufnahme!');
+                    return;
                 }
-            });
-            
-            // Reverse button
-            reverseBtn.addEventListener('click', function() {
-                if (audioBlob) {
-                    reverseBtn.disabled = true;
-                    playBtn.disabled = true;
+                
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                     
-                    // Show a visual indicator that reversing is in progress
-                    reverseBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reversing';
+                    this.mediaRecorder = new MediaRecorder(stream);
+                    this.audioChunks = [];
                     
-                    reverseAudio(audioBlob).then(reversedBlob => {
-                        const reversedUrl = URL.createObjectURL(reversedBlob);
+                    this.mediaRecorder.ondataavailable = (event) => {
+                        this.audioChunks.push(event.data);
+                    };
+                    
+                    this.mediaRecorder.onstop = () => {
+                        this.audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
+                        this.audioUrl = URL.createObjectURL(this.audioBlob);
+                        this.audioElement.src = this.audioUrl;
                         
-                        // Replace the current audio with the reversed version
-                        if (audioElement) {
-                            audioElement.pause();
-                            URL.revokeObjectURL(audioElement.src);
-                        }
-                        
-                        audioElement = new Audio(reversedUrl);
-                        audioUrl = reversedUrl;
-                        audioBlob = reversedBlob;
-                        
-                        // Update the history with the reversed version
-                        addToHistory(reversedUrl, true);
-                        
-                        // Re-enable buttons
-                        reverseBtn.disabled = false;
-                        playBtn.disabled = false;
-                        reverseBtn.innerHTML = '<i class="fas fa-exchange-alt"></i> Reverse';
-                    }).catch(error => {
-                        console.error('Error reversing audio:', error);
-                        reverseBtn.disabled = false;
-                        playBtn.disabled = false;
-                        reverseBtn.innerHTML = '<i class="fas fa-exchange-alt"></i> Reverse';
-                    });
+                        this.saveRecording();
+                        stream.getTracks().forEach(track => track.stop());
+                    };
+                    
+                    this.mediaRecorder.start();
+                    this.isRecording = true;
+                    this.startTime = Date.now() - this.elapsedTime;
+                    
+                    this.updateUIForRecording();
+                    this.startTimer();
+                    
+                } catch (error) {
+                    console.error('Fehler beim Starten der Aufnahme:', error);
+                    alert('Aufnahme konnte nicht gestartet werden!');
                 }
-            });
+            }
             
-            // History button
-            historyBtn.addEventListener('click', function() {
-                displayHistory();
-            });
-            
-            // Clear button
-            clearBtn.addEventListener('click', function() {
-                clearHistory();
-            });
-            
-            // Function to reverse audio
-            async function reverseAudio(blob) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
+            stopRecording() {
+                if (this.mediaRecorder && this.isRecording) {
+                    this.mediaRecorder.stop();
+                    this.isRecording = false;
+                    this.stopTimer();
                     
-                    reader.onload = function() {
-                        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                        
-                        audioContext.decodeAudioData(reader.result)
-                            .then(buffer => {
-                                // Reverse the audio buffer
-                                const reversedBuffer = audioContext.createBuffer(
-                                    buffer.numberOfChannels,
-                                    buffer.length,
-                                    buffer.sampleRate
-                                );
-                                
-                                for (let channel = 0; channel < buffer.numberOfChannels; channel++) {
-                                    const originalData = buffer.getChannelData(channel);
-                                    const reversedData = reversedBuffer.getChannelData(channel);
-                                    
-                                    for (let i = 0; i < buffer.length; i++) {
-                                        reversedData[i] = originalData[buffer.length - 1 - i];
-                                    }
-                                }
-                                
-                                // Convert back to blob
-                                const numberOfChannels = reversedBuffer.numberOfChannels;
-                                const length = reversedBuffer.length * numberOfChannels * 2; // 2 bytes per sample
-                                const bufferArray = new ArrayBuffer(44 + length);
-                                const view = new DataView(bufferArray);
-                                
-                                // Write WAV header
-                                writeString(view, 0, 'RIFF');
-                                view.setUint32(4, 36 + length, true);
-                                writeString(view, 8, 'WAVE');
-                                writeString(view, 12, 'fmt ');
-                                view.setUint32(16, 16, true);
-                                view.setUint16(20, 1, true);
-                                view.setUint16(22, numberOfChannels, true);
-                                view.setUint32(24, reversedBuffer.sampleRate, true);
-                                view.setUint32(28, reversedBuffer.sampleRate * numberOfChannels * 2, true);
-                                view.setUint16(32, numberOfChannels * 2, true);
-                                view.setUint16(34, 16, true);
-                                writeString(view, 36, 'data');
-                                view.setUint32(40, length, true);
-                                
-                                // Write audio data
-                                const data = new Int16Array(bufferArray, 44);
-                                let offset = 0;
-                                
-                                for (let i = 0; i < reversedBuffer.length; i++) {
-                                    for (let channel = 0; channel < numberOfChannels; channel++) {
-                                        const sample = Math.max(-1, Math.min(1, reversedBuffer.getChannelData(channel)[i]));
-                                        data[offset] = sample < 0 ? sample * 0x800
+                    this.updateUIForStopped();
+                }
+            }
+            
+            playAudio() {
+                if (this.audioBlob) {
+                    this.audioElement.play();
+                    this.playBtn.disabled = true;
+                    this.pauseBtn.disabled = false;
+                }
+            }
+            
+            pauseAudio() {
+                if (!this.audioElement.paused) {
+                    this.audioElement.pause();
+                    this.playBtn.disabled = false;
+                    this.pauseBtn.disabled = true;
+                }
+            }
+            
+            onAudioEnded() {
+                this.playBtn.disabled = false;
+                this.pauseBtn.disabled = true;
+                this.progressBar.style.width = '0%';
+                this.currentTime.textContent = '00:00';
+            }
+            
+            startTimer() {
+                this.stopTimer();
+                this.timerInterval = setInterval(() => {
+                    this.elapsedTime = Date.now() - this.startTime;
+                    this.updateTimerDisplay();
+                }, 1000);
+            }
+            
+            stopTimer() {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
+                }
+            }
+            
+            updateTimerDisplay() {
+                const seconds = Math.floor(this.elapsedTime / 1000);
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                this.timer.textContent = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            }
+            
+            updateProgress() {
+                if (this.audioElement.duration) {
+                    const percent = (this.audioElement.currentTime / this.audioElement.duration) * 100;
+                    this.progressBar.style.width = percent + '%';
+                    
+                    this.currentTime.textContent = this.formatTime(this.audioElement.currentTime);
+                    this.duration.textContent = this.formatTime(this.audioElement.duration);
+                }
+            }
+            
+            formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+            
+            updateUIForRecording() {
+                this.recordBtn.disabled = true;
+                this.stopBtn.disabled = false;
+                this.playBtn.disabled = true;
+                this.pauseBtn.disabled = true;
+                this.recordingIndicator.style.display = 'flex';
+                this.audioPlayer.style.display = 'none';
+            }
+            
+            updateUIForStopped() {
+                this.recordBtn.disabled = false;
+                this.stopBtn.disabled = true;
+                this.playBtn.disabled = false;
+                this.pauseBtn.disabled = true;
+                this.recordingIndicator.style.display = 'none';
+                this.audioPlayer.style.display = 'block';
+            }
+            
+            saveRecording() {
+                const recording = {
+                    id: Date.now(),
+                    timestamp: new Date().toISOString(),
+                    blob: this.audioBlob,
+                    duration: this.elapsedTime
+                };
+                
+                this.recordings.unshift(recording);
+                if (this.recordings.length > 10) {
+                    this.recordings.pop();
+                }
+                
+                localStorage.setItem('audioRecordings', JSON.stringify(this.recordings));
+                this.loadRecordings();
+            }
+            
+            loadRecordings() {
+                this.recordingsList.innerHTML = '';
+                
+                if (this.recordings.length === 0) {
+                    this.recordingsList.innerHTML = '<div style="text-align: center; opacity: 0.7; padding: 20px;">Keine Aufnahmen vorhanden</div>';
+                    return;
+                }
+                
+                this.recordings.forEach((recording, index) => {
+                    const date = new Date(recording.timestamp);
+                    const timeString = date.toLocaleTimeString('de-DE');
+                    const duration = this.formatTime(recording.duration / 1000);
+                    
+                    const item = document.createElement('div');
+                    item.className = 'recording-item';
+                    item.innerHTML = `
+                        <div class="recording-info">
+                            <div class="recording-name">Aufnahme #${this.recordings.length - index}</div>
+                            <div class="recording-time">${timeString} • ${duration}</div>
+                        </div>
+                    `;
+                    
+                    item.addEventListener('click', () => this.loadRecording(recording));
+                    this.recordingsList.appendChild(item);
+                });
+            }
+            
+            loadRecording(recording) {
+                // In einer echten Anwendung würden wir hier die Aufnahme laden
+                // Da wir Blobs nicht im localStorage speichern können, zeigen wir nur eine Meldung
+                alert('In dieser Demo werden Aufnahmen nicht dauerhaft gespeichert. Die aktuelle Aufnahme kann abgespielt werden.');
+            }
+        }
+        
+        // App initialisieren wenn das DOM geladen ist
+        document.addEventListener('DOMContentLoaded', () => {
+            new AudioRecorder();
+        });
+    </script>
+</body>
+</html>
