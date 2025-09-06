@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#8A2BE2">
     <title>Audio Recorder</title>
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkF1ZGlvIFJlY29yZGVyIiwKICAic2hvcnRfbmFtZSI6ICJBdWRpbyIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhacFpYZENiM2c5SWpBZ01DQXpOVEFnTXpVd0lqNDhjR0YwYUNCbWFXeHNQU0lqYjI1bGJpQm9kSFJ3T2k4dmQzZDNMbmN6TG05eVp5OHlNREl3TURJd01ESXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3......">
     <style>
         * {
             margin: 0;
@@ -13,84 +15,93 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
-            color: white;
+            padding: 15px;
+            color: #e0e0ff;
         }
 
         .container {
             width: 100%;
-            max-width: 500px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            max-width: 400px;
+            background: rgba(25, 25, 45, 0.8);
+            backdrop-filter: blur(15px);
             border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(138, 43, 226, 0.3);
         }
 
         h1 {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             font-weight: 300;
-            font-size: 2.2rem;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            font-size: 1.8rem;
+            background: linear-gradient(45deg, #da70d6, #9370db, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
         }
 
         .btn {
-            padding: 15px 25px;
+            padding: 15px;
             border: none;
-            border-radius: 50px;
-            font-size: 16px;
+            border-radius: 15px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            color: white;
+            min-height: 50px;
         }
 
         .btn:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
         .btn-record {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            color: white;
+            background: linear-gradient(45deg, #ff4757, #ff3742);
         }
 
         .btn-stop {
-            background: linear-gradient(45deg, #ff9ff3, #f368e0);
-            color: white;
+            background: linear-gradient(45deg, #ff6b81, #ff4757);
         }
 
         .btn-play {
-            background: linear-gradient(45deg, #1dd1a1, #10ac84);
-            color: white;
+            background: linear-gradient(45deg, #2ed573, #1dd1a1);
         }
 
         .btn-pause {
-            background: linear-gradient(45deg, #feca57, #ff9ff3);
-            color: white;
+            background: linear-gradient(45deg, #ffa502, #ff9f1a);
+        }
+
+        .btn-reverse {
+            background: linear-gradient(45deg, #70a1ff, #5352ed);
+        }
+
+        .btn-download {
+            background: linear-gradient(45deg, #3742fa, #5f27cd);
         }
 
         .btn:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4);
         }
 
         .btn:active:not(:disabled) {
@@ -101,15 +112,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            font-size: 18px;
+            gap: 8px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #ff6b81;
         }
 
         .pulse {
-            width: 12px;
-            height: 12px;
-            background: #ff6b6b;
+            width: 10px;
+            height: 10px;
+            background: #ff4757;
             border-radius: 50%;
             animation: pulse 1.5s infinite;
         }
@@ -124,19 +136,20 @@
             text-align: center;
             font-size: 2rem;
             font-family: 'Courier New', monospace;
-            margin-bottom: 30px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+            color: #da70d6;
         }
 
         .audio-player {
             width: 100%;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .progress-container {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            height: 8px;
+            height: 6px;
             margin-bottom: 10px;
             cursor: pointer;
             overflow: hidden;
@@ -144,7 +157,7 @@
 
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(90deg, #da70d6, #9370db);
             width: 0%;
             transition: width 0.1s ease;
         }
@@ -152,44 +165,43 @@
         .time-display {
             display: flex;
             justify-content: space-between;
-            font-size: 14px;
+            font-size: 12px;
             opacity: 0.8;
+            color: #a0a0c0;
         }
 
         .history {
-            margin-top: 30px;
+            margin-top: 25px;
         }
 
         .history-title {
             text-align: center;
             margin-bottom: 15px;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 500;
+            color: #9370db;
         }
 
         .recordings-list {
-            max-height: 200px;
+            max-height: 150px;
             overflow-y: auto;
         }
 
         .recording-item {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
+            background: rgba(40, 40, 60, 0.6);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 10px;
             cursor: pointer;
             transition: background 0.3s ease;
+            border: 1px solid rgba(138, 43, 226, 0.2);
         }
 
         .recording-item:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .recording-item:last-child {
-            margin-bottom: 0;
+            background: rgba(60, 60, 90, 0.6);
         }
 
         .recording-info {
@@ -198,59 +210,119 @@
 
         .recording-name {
             font-weight: 500;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
+            font-size: 14px;
         }
 
         .recording-time {
-            font-size: 12px;
-            opacity: 0.8;
+            font-size: 11px;
+            opacity: 0.7;
         }
 
-        .permission-warning {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 20px;
+        .install-prompt {
+            background: rgba(138, 43, 226, 0.2);
+            border-radius: 12px;
+            padding: 15px;
             text-align: center;
             margin-top: 20px;
+            border: 1px solid rgba(138, 43, 226, 0.4);
         }
 
-        @media (max-width: 480px) {
+        .install-btn {
+            background: linear-gradient(45deg, #8a2be2, #9370db);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 400px) {
             .container {
                 padding: 20px;
                 margin: 10px;
             }
             
             h1 {
-                font-size: 1.8rem;
+                font-size: 1.5rem;
             }
             
             .btn {
-                padding: 12px 20px;
-                font-size: 14px;
+                padding: 12px;
+                font-size: 12px;
             }
             
             .controls {
-                gap: 10px;
+                gap: 8px;
             }
+        }
+
+        /* Scrollbar styling */
+        .recordings-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .recordings-list::-webkit-scrollbar-track {
+            background: rgba(25, 25, 45, 0.5);
+        }
+
+        .recordings-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #8a2be2, #da70d6);
+            border-radius: 3px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎤 Audio Recorder</h1>
+        <h1>Audio Recorder</h1>
         
         <div class="recording-indicator" id="recordingIndicator" style="display: none;">
             <div class="pulse"></div>
-            <span>Aufnahme läuft...</span>
+            <span>Aufnahme läuft</span>
         </div>
         
         <div class="timer" id="timer">00:00</div>
         
         <div class="controls">
-            <button class="btn btn-record" id="recordBtn">● Aufnehmen</button>
-            <button class="btn btn-stop" id="stopBtn" disabled>⏹ Stop</button>
-            <button class="btn btn-play" id="playBtn" disabled>▶ Abspielen</button>
-            <button class="btn btn-pause" id="pauseBtn" disabled>⏸ Pause</button>
+            <button class="btn btn-record" id="recordBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                    <circle cx="12" cy="12" r="10"/>
+                </svg>
+                Aufnehmen
+            </button>
+            <button class="btn btn-stop" id="stopBtn" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                    <rect x="6" y="6" width="12" height="12"/>
+                </svg>
+                Stop
+            </button>
+            <button class="btn btn-play" id="playBtn" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                    <polygon points="5,3 19,12 5,21"/>
+                </svg>
+                Play
+            </button>
+            <button class="btn btn-pause" id="pauseBtn" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                    <rect x="6" y="4" width="4" height="16"/>
+                    <rect x="14" y="4" width="4" height="16"/>
+                </svg>
+                Pause
+            </button>
+            <button class="btn btn-reverse" id="reverseBtn" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                    <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
+                </svg>
+                Rückwärts
+            </button>
+            <button class="btn btn-download" id="downloadBtn" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                </svg>
+                Download
+            </button>
         </div>
         
         <div class="audio-player" id="audioPlayer" style="display: none;">
@@ -267,6 +339,11 @@
             <h3 class="history-title">Verlauf</h3>
             <div class="recordings-list" id="recordingsList"></div>
         </div>
+        
+        <div class="install-prompt" id="installPrompt" style="display: none;">
+            <p>Installiere die App für bessere Erfahrung</p>
+            <button class="install-btn" id="installBtn">Installieren</button>
+        </div>
     </div>
 
     <script>
@@ -278,15 +355,16 @@
                 this.audioUrl = null;
                 this.isRecording = false;
                 this.isPaused = false;
+                this.isReversed = false;
                 this.startTime = 0;
                 this.elapsedTime = 0;
                 this.timerInterval = null;
                 this.audioElement = new Audio();
-                this.recordings = JSON.parse(localStorage.getItem('audioRecordings') || '[]');
+                this.deferredPrompt = null;
                 
                 this.initElements();
                 this.initEventListeners();
-                this.loadRecordings();
+                this.setupInstallPrompt();
             }
             
             initElements() {
@@ -294,6 +372,8 @@
                 this.stopBtn = document.getElementById('stopBtn');
                 this.playBtn = document.getElementById('playBtn');
                 this.pauseBtn = document.getElementById('pauseBtn');
+                this.reverseBtn = document.getElementById('reverseBtn');
+                this.downloadBtn = document.getElementById('downloadBtn');
                 this.timer = document.getElementById('timer');
                 this.recordingIndicator = document.getElementById('recordingIndicator');
                 this.audioPlayer = document.getElementById('audioPlayer');
@@ -302,6 +382,8 @@
                 this.currentTime = document.getElementById('currentTime');
                 this.duration = document.getElementById('duration');
                 this.recordingsList = document.getElementById('recordingsList');
+                this.installPrompt = document.getElementById('installPrompt');
+                this.installBtn = document.getElementById('installBtn');
             }
             
             initEventListeners() {
@@ -309,6 +391,8 @@
                 this.stopBtn.addEventListener('click', () => this.stopRecording());
                 this.playBtn.addEventListener('click', () => this.playAudio());
                 this.pauseBtn.addEventListener('click', () => this.pauseAudio());
+                this.reverseBtn.addEventListener('click', () => this.playReverse());
+                this.downloadBtn.addEventListener('click', () => this.downloadAudio());
                 
                 this.progressContainer.addEventListener('click', (e) => {
                     if (this.audioBlob) {
@@ -320,6 +404,26 @@
                 
                 this.audioElement.addEventListener('timeupdate', () => this.updateProgress());
                 this.audioElement.addEventListener('ended', () => this.onAudioEnded());
+            }
+            
+            setupInstallPrompt() {
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    this.deferredPrompt = e;
+                    this.installPrompt.style.display = 'block';
+                });
+                
+                this.installBtn.addEventListener('click', () => {
+                    if (this.deferredPrompt) {
+                        this.deferredPrompt.prompt();
+                        this.deferredPrompt.userChoice.then((choiceResult) => {
+                            if (choiceResult.outcome === 'accepted') {
+                                this.installPrompt.style.display = 'none';
+                            }
+                            this.deferredPrompt = null;
+                        });
+                    }
+                });
             }
             
             async requestMicrophonePermission() {
@@ -336,7 +440,7 @@
             async startRecording() {
                 const hasPermission = await this.requestMicrophonePermission();
                 if (!hasPermission) {
-                    alert('Mikrofon-Zugriff wird benötigt für die Aufnahme!');
+                    alert('Mikrofon-Zugriff wird benötigt!');
                     return;
                 }
                 
@@ -355,7 +459,7 @@
                         this.audioUrl = URL.createObjectURL(this.audioBlob);
                         this.audioElement.src = this.audioUrl;
                         
-                        this.saveRecording();
+                        this.updateUIForStopped();
                         stream.getTracks().forEach(track => track.stop());
                     };
                     
@@ -367,8 +471,8 @@
                     this.startTimer();
                     
                 } catch (error) {
-                    console.error('Fehler beim Starten der Aufnahme:', error);
-                    alert('Aufnahme konnte nicht gestartet werden!');
+                    console.error('Fehler:', error);
+                    alert('Aufnahme fehlgeschlagen!');
                 }
             }
             
@@ -377,145 +481,67 @@
                     this.mediaRecorder.stop();
                     this.isRecording = false;
                     this.stopTimer();
-                    
-                    this.updateUIForStopped();
                 }
             }
             
             playAudio() {
                 if (this.audioBlob) {
+                    this.isReversed = false;
+                    this.audioElement.playbackRate = 1.0;
                     this.audioElement.play();
-                    this.playBtn.disabled = true;
-                    this.pauseBtn.disabled = false;
+                    this.updatePlayButtons();
+                }
+            }
+            
+            playReverse() {
+                if (this.audioBlob) {
+                    this.isReversed = true;
+                    this.audioElement.playbackRate = -1.0;
+                    this.audioElement.play();
+                    this.updatePlayButtons();
                 }
             }
             
             pauseAudio() {
                 if (!this.audioElement.paused) {
                     this.audioElement.pause();
+                    this.updatePlayButtons();
+                }
+            }
+            
+            updatePlayButtons() {
+                if (this.audioElement.paused) {
                     this.playBtn.disabled = false;
+                    this.reverseBtn.disabled = false;
                     this.pauseBtn.disabled = true;
+                } else {
+                    this.playBtn.disabled = this.isReversed;
+                    this.reverseBtn.disabled = !this.isReversed;
+                    this.pauseBtn.disabled = false;
                 }
             }
             
             onAudioEnded() {
-                this.playBtn.disabled = false;
-                this.pauseBtn.disabled = true;
+                this.updatePlayButtons();
                 this.progressBar.style.width = '0%';
                 this.currentTime.textContent = '00:00';
+            }
+            
+            downloadAudio() {
+                if (this.audioBlob) {
+                    const url = URL.createObjectURL(this.audioBlob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `aufnahme_${new Date().getTime()}.webm`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
             }
             
             startTimer() {
                 this.stopTimer();
                 this.timerInterval = setInterval(() => {
                     this.elapsedTime = Date.now() - this.startTime;
-                    this.updateTimerDisplay();
-                }, 1000);
-            }
-            
-            stopTimer() {
-                if (this.timerInterval) {
-                    clearInterval(this.timerInterval);
-                    this.timerInterval = null;
-                }
-            }
-            
-            updateTimerDisplay() {
-                const seconds = Math.floor(this.elapsedTime / 1000);
-                const minutes = Math.floor(seconds / 60);
-                const remainingSeconds = seconds % 60;
-                this.timer.textContent = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-            }
-            
-            updateProgress() {
-                if (this.audioElement.duration) {
-                    const percent = (this.audioElement.currentTime / this.audioElement.duration) * 100;
-                    this.progressBar.style.width = percent + '%';
-                    
-                    this.currentTime.textContent = this.formatTime(this.audioElement.currentTime);
-                    this.duration.textContent = this.formatTime(this.audioElement.duration);
-                }
-            }
-            
-            formatTime(seconds) {
-                const mins = Math.floor(seconds / 60);
-                const secs = Math.floor(seconds % 60);
-                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-            }
-            
-            updateUIForRecording() {
-                this.recordBtn.disabled = true;
-                this.stopBtn.disabled = false;
-                this.playBtn.disabled = true;
-                this.pauseBtn.disabled = true;
-                this.recordingIndicator.style.display = 'flex';
-                this.audioPlayer.style.display = 'none';
-            }
-            
-            updateUIForStopped() {
-                this.recordBtn.disabled = false;
-                this.stopBtn.disabled = true;
-                this.playBtn.disabled = false;
-                this.pauseBtn.disabled = true;
-                this.recordingIndicator.style.display = 'none';
-                this.audioPlayer.style.display = 'block';
-            }
-            
-            saveRecording() {
-                const recording = {
-                    id: Date.now(),
-                    timestamp: new Date().toISOString(),
-                    blob: this.audioBlob,
-                    duration: this.elapsedTime
-                };
-                
-                this.recordings.unshift(recording);
-                if (this.recordings.length > 10) {
-                    this.recordings.pop();
-                }
-                
-                localStorage.setItem('audioRecordings', JSON.stringify(this.recordings));
-                this.loadRecordings();
-            }
-            
-            loadRecordings() {
-                this.recordingsList.innerHTML = '';
-                
-                if (this.recordings.length === 0) {
-                    this.recordingsList.innerHTML = '<div style="text-align: center; opacity: 0.7; padding: 20px;">Keine Aufnahmen vorhanden</div>';
-                    return;
-                }
-                
-                this.recordings.forEach((recording, index) => {
-                    const date = new Date(recording.timestamp);
-                    const timeString = date.toLocaleTimeString('de-DE');
-                    const duration = this.formatTime(recording.duration / 1000);
-                    
-                    const item = document.createElement('div');
-                    item.className = 'recording-item';
-                    item.innerHTML = `
-                        <div class="recording-info">
-                            <div class="recording-name">Aufnahme #${this.recordings.length - index}</div>
-                            <div class="recording-time">${timeString} • ${duration}</div>
-                        </div>
-                    `;
-                    
-                    item.addEventListener('click', () => this.loadRecording(recording));
-                    this.recordingsList.appendChild(item);
-                });
-            }
-            
-            loadRecording(recording) {
-                // In einer echten Anwendung würden wir hier die Aufnahme laden
-                // Da wir Blobs nicht im localStorage speichern können, zeigen wir nur eine Meldung
-                alert('In dieser Demo werden Aufnahmen nicht dauerhaft gespeichert. Die aktuelle Aufnahme kann abgespielt werden.');
-            }
-        }
-        
-        // App initialisieren wenn das DOM geladen ist
-        document.addEventListener('DOMContentLoaded', () => {
-            new AudioRecorder();
-        });
-    </script>
-</body>
-</html>
+                  
